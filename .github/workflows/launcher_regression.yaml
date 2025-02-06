@@ -70,11 +70,11 @@ jobs:
           run: |
                 set -e
                 export ADAPTER_TESTER=1
-                if [ "$ENV" = "DEV" ]; then
-                /home/runner/mlx/deps/launcher/launcher.bin -gw-env=dev
-                elif [ "$ENV" = "Multilogin EU" ]; then
+                # if [ "$ENV" = "DEV" ]; then
+                # /home/runner/mlx/deps/launcher/launcher.bin -gw-env=dev
+                # elif [ "$ENV" = "Multilogin EU" ]; then
                 /home/runner/mlx/deps/launcher/launcher.bin
-                fi
+                # fi
                 sleep 2 # Allow some time for the launcher to initialize
         
         - name: Start test
