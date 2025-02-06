@@ -71,7 +71,7 @@ jobs:
                 set -e
                 export ADAPTER_TESTER=1
                 echo "Starting Launcher"
-                /home/runner/mlx/deps/launcher/launcher.bin
+                /home/runner/mlx/deps/launcher/launcher.bin &
                 echo "Launcher started" 
         
         - name: Start test
