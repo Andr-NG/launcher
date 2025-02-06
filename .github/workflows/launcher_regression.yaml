@@ -73,7 +73,7 @@ jobs:
                 if [ $ENV == "DEV" ]; then
                 /home/runner/mlx/deps/launcher/launcher.bin -gw-env=dev
                 elif [ $ENV == "Multilogin EU" ]; then
-                /home/runner/mlx/deps/launcher/launcher.bin &
+                /home/runner/mlx/deps/launcher/launcher.bin
                 fi
                 sleep 2 # Allow some time for the launcher to initialize
         
