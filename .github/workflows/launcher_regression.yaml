@@ -82,7 +82,7 @@ jobs:
                 pytest tests/test_launcher_regression.py --html=report.html
         
         - name: Upload HTML Report as Artifact
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@v4
           with:
                 name: pytest-report
                 path: report.html
