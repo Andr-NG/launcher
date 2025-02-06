@@ -3,15 +3,7 @@ name: Launcher Regression
 on:
     workflow_dispatch:
         inputs:
-            launcher_build:
-                description: 'Launcher build environment (affects download URL)'
-                required: true
-                default: 'DEV'
-                type: choice
-                options:
-                  - DEV
-                  - PROD
-            launcher_version:
+            launcher_url_version:
                 description: 'Specific launcher version to get the correct URL'
                 required: true
                 default: 'v1'
