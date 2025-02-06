@@ -33,7 +33,7 @@ jobs:
             EMAIL: ${{ vars.EMAIL }}
             PASSWORD: ${{ vars.PASSWORD }}
             ENV: ${{ inputs.backend_env }}
-            LAUNCHER_VER: ${{ inputs.launcher_version }}        
+            LAUNCHER_VER: ${{ inputs.launcher_url_version }}        
         steps:
         - uses: actions/checkout@v3
         
