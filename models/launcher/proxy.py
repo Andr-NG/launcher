@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from typing import Optional, Set
@@ -33,7 +33,8 @@ class Proxy(BaseModel):
     port: Optional[Annotated[int, Field(le=65535, strict=True, ge=0)]] = None
     username: Optional[StrictStr] = None
     password: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["type", "host", "port", "username", "password"]
+    save_traffic: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["type", "host", "port", "username", "password", "save_traffic"]
 
     @field_validator('type')
     def type_validate_enum(cls, value):
@@ -97,7 +98,8 @@ class Proxy(BaseModel):
             "host": obj.get("host"),
             "port": obj.get("port"),
             "username": obj.get("username"),
-            "password": obj.get("password")
+            "password": obj.get("password"),
+            "save_traffic": obj.get("save_traffic")
         })
         return _obj
 

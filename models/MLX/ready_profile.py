@@ -40,7 +40,8 @@ class ReadyProfile(BaseModel):
     custom_start_urls: Optional[List[StrictStr]] = None
     custom_dns: Optional[StrictStr] = None
     browser_extensions: Optional[Annotated[List[BrowserExtension], Field(max_length=50)]] = None
-    __properties: ClassVar[List[str]] = ["name", "is_local", "core", "flags", "fingerprint", "custom_start_urls", "custom_dns", "browser_extensions"]
+    folder_id: StrictStr
+    __properties: ClassVar[List[str]] = ["name", "is_local", "core", "flags", "fingerprint", "custom_start_urls", "custom_dns", "browser_extensions", "folder_id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,9 +94,9 @@ class ReadyProfile(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in browser_extensions (list)
         _items = []
         if self.browser_extensions:
-            for _item in self.browser_extensions:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_browser_extensions in self.browser_extensions:
+                if _item_browser_extensions:
+                    _items.append(_item_browser_extensions.to_dict())
             _dict['browser_extensions'] = _items
         return _dict
 
@@ -116,7 +117,8 @@ class ReadyProfile(BaseModel):
             "fingerprint": FingerprintData.from_dict(obj["fingerprint"]) if obj.get("fingerprint") is not None else None,
             "custom_start_urls": obj.get("custom_start_urls"),
             "custom_dns": obj.get("custom_dns"),
-            "browser_extensions": [BrowserExtension.from_dict(_item) for _item in obj["browser_extensions"]] if obj.get("browser_extensions") is not None else None
+            "browser_extensions": [BrowserExtension.from_dict(_item) for _item in obj["browser_extensions"]] if obj.get("browser_extensions") is not None else None,
+            "folder_id": obj.get("folder_id")
         })
         return _obj
 

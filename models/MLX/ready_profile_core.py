@@ -19,10 +19,9 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List, Optional, Set
 from models.MLX.profile_meta_core import ProfileMetaCore
 from models.MLX.proxy import Proxy
-from typing import Optional, Set
 from typing_extensions import Self
 
 class ReadyProfileCore(BaseModel):

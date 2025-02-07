@@ -73,9 +73,9 @@ class BrowserExtensionList(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in browser_extensions (list)
         _items = []
         if self.browser_extensions:
-            for _item in self.browser_extensions:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_browser_extensions in self.browser_extensions:
+                if _item_browser_extensions:
+                    _items.append(_item_browser_extensions.to_dict())
             _dict['browser_extensions'] = _items
         return _dict
 

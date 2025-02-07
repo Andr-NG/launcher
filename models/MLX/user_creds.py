@@ -24,13 +24,12 @@ from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 
-
 class UserCreds(BaseModel):
     """
     UserCreds
-    """  # noqa: E501
+    """ # noqa: E501
     email: StrictStr
-    password: Annotated[str, Field(min_length=0, strict=True, max_length=32)]
+    password: Annotated[str, Field(min_length=8, strict=True, max_length=32)]
     __properties: ClassVar[List[str]] = ["email", "password"]
 
     model_config = ConfigDict(
@@ -38,6 +37,7 @@ class UserCreds(BaseModel):
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -87,3 +87,5 @@ class UserCreds(BaseModel):
             "password": obj.get("password")
         })
         return _obj
+
+

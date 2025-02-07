@@ -19,8 +19,8 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictStr
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, StrictBool, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -33,7 +33,8 @@ class ProfileMetaInternal(BaseModel):
     last_update_at: datetime
     removed_at: datetime
     removed_by: StrictStr
-    __properties: ClassVar[List[str]] = ["status", "created_at", "last_update_at", "removed_at", "removed_by"]
+    is_mla_profile: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["status", "created_at", "last_update_at", "removed_at", "removed_by", "is_mla_profile"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -90,7 +91,8 @@ class ProfileMetaInternal(BaseModel):
             "created_at": obj.get("created_at"),
             "last_update_at": obj.get("last_update_at"),
             "removed_at": obj.get("removed_at"),
-            "removed_by": obj.get("removed_by")
+            "removed_by": obj.get("removed_by"),
+            "is_mla_profile": obj.get("is_mla_profile")
         })
         return _obj
 

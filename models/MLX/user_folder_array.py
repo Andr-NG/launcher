@@ -21,17 +21,15 @@ import json
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
-from models.MLX.user_folder import UserFolder
+from models.MLX.folder import Folder
 from typing import Optional, Set
 from typing_extensions import Self
-
 
 class UserFolderArray(BaseModel):
     """
     UserFolderArray
-    """  # noqa: E501
-
-    folders: Annotated[List[UserFolder], Field(min_length=1, max_length=1000)]
+    """ # noqa: E501
+    folders: Annotated[List[Folder], Field(min_length=1, max_length=1000)]
     __properties: ClassVar[List[str]] = ["folders"]
 
     model_config = ConfigDict(
@@ -39,6 +37,7 @@ class UserFolderArray(BaseModel):
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -64,20 +63,21 @@ class UserFolderArray(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set([
+        ])
 
         _dict = self.model_dump(
             by_alias=True,
             exclude=excluded_fields,
             exclude_none=True,
         )
-# override the default output from pydantic by calling `to_dict()` of each item in folders (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in folders (list)
         _items = []
         if self.folders:
-            for _item in self.folders:
-                if _item:
-                    _items.append(_item.to_dict())
-            _dict["folders"] = _items
+            for _item_folders in self.folders:
+                if _item_folders:
+                    _items.append(_item_folders.to_dict())
+            _dict['folders'] = _items
         return _dict
 
     @classmethod
@@ -89,13 +89,9 @@ class UserFolderArray(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "folders": (
-                    [UserFolder.from_dict(_item) for _item in obj["folders"]]
-                    if obj.get("folders") is not None
-                    else None
-                )
-            }
-        )
+        _obj = cls.model_validate({
+            "folders": [Folder.from_dict(_item) for _item in obj["folders"]] if obj.get("folders") is not None else None
+        })
         return _obj
+
+

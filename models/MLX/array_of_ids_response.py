@@ -19,10 +19,9 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Any, ClassVar, Dict, List, Optional, Set
 from models.MLX.array_of_ids import ArrayOfIDs
 from models.MLX.response_status import ResponseStatus
-from typing import Optional, Set
 from typing_extensions import Self
 
 class ArrayOfIDsResponse(BaseModel):

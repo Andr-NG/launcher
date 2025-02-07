@@ -55,6 +55,7 @@ class TestLauncherRegression:
 
                 assert ws.connected, "Connection failed"
                 logger.info("Connection successfull!")
+                ws.close()
                 break
 
             except websocket.WebSocketException as e:
@@ -63,6 +64,7 @@ class TestLauncherRegression:
                     logger.info("Attempting to connect again")
                     time.sleep(DELAY)
                 else:
+                    ws.close()
                     pytest.fail("Failed to connect to WebSocket after multiple retries")
 
             except ssl.SSLCertVerificationError as e:
@@ -74,10 +76,12 @@ class TestLauncherRegression:
 
                 assert ws.connected, 'Connection failed'
                 logger.info("Connection successfull!")
+                ws.close()
                 break
 
             except Exception as e:
                 logger.error(f"Unexpected error occurred: {e}")
+                ws.close()
                 raise
 
         # Starting a QBP to populate messages.

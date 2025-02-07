@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Multilogin X Profile Management
+    Multilogin X Launcher API
 
-    Multilogin X Profile Management API allows you to manage profiles.
+    Launcher API is used to work with profiles in the browser (start, stop, get statuses).
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@multilogin.com
@@ -31,7 +31,8 @@ class Navigator(BaseModel):
     hardware_concurrency: StrictInt
     os_cpu: Optional[StrictStr] = None
     platform: StrictStr
-    __properties: ClassVar[List[str]] = ["user_agent", "hardware_concurrency", "os_cpu", "platform"]
+    max_touch_points: Optional[StrictInt] = None
+    __properties: ClassVar[List[str]] = ["user_agent", "hardware_concurrency", "os_cpu", "platform", "max_touch_points"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -87,7 +88,8 @@ class Navigator(BaseModel):
             "user_agent": obj.get("user_agent"),
             "hardware_concurrency": obj.get("hardware_concurrency"),
             "os_cpu": obj.get("os_cpu"),
-            "platform": obj.get("platform")
+            "platform": obj.get("platform"),
+            "max_touch_points": obj.get("max_touch_points")
         })
         return _obj
 

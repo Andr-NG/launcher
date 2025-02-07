@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Multilogin X Profile Management
+    Multilogin X Launcher API
 
-    Multilogin X Profile Management API allows you to manage profiles.
+    Launcher API is used to work with profiles in the browser (start, stop, get statuses).
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@multilogin.com
@@ -18,12 +18,12 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
-from models.MLX.allowed_screen_resolutions import AllowedScreenResolutions
 from models.MLX.browser_type import BrowserType
 from models.MLX.proxy import Proxy
 from models.MLX.quick_profile_meta_params import QuickProfileMetaParams
+from models.MLX.script_parameter import ScriptParameter
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -34,16 +34,29 @@ class QuickProfile(BaseModel):
     browser_type: BrowserType
     core_version: Optional[StrictInt] = None
     os_type: StrictStr
+    automation: Optional[StrictStr] = None
+    is_headless: Optional[StrictBool] = None
     proxy: Optional[Proxy] = None
     parameters: QuickProfileMetaParams
-    allowed_screen_resolutions: Optional[AllowedScreenResolutions] = None
-    __properties: ClassVar[List[str]] = ["browser_type", "core_version", "os_type", "proxy", "parameters", "allowed_screen_resolutions"]
+    script_file: Optional[StrictStr] = Field(default=None, description="Script file name with extension relative to the scripts folder")
+    script_params: Optional[List[ScriptParameter]] = Field(default=None, description="Script parameters")
+    __properties: ClassVar[List[str]] = ["browser_type", "core_version", "os_type", "automation", "is_headless", "proxy", "parameters", "script_file", "script_params"]
 
     @field_validator('os_type')
     def os_type_validate_enum(cls, value):
         """Validates the enum"""
         if value not in set(['linux', 'macos', 'windows', 'android']):
             raise ValueError("must be one of enum values ('linux', 'macos', 'windows', 'android')")
+        return value
+
+    @field_validator('automation')
+    def automation_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['selenium', 'puppeteer']):
+            raise ValueError("must be one of enum values ('selenium', 'puppeteer')")
         return value
 
     model_config = ConfigDict(
@@ -91,9 +104,13 @@ class QuickProfile(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of parameters
         if self.parameters:
             _dict['parameters'] = self.parameters.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of allowed_screen_resolutions
-        if self.allowed_screen_resolutions:
-            _dict['allowed_screen_resolutions'] = self.allowed_screen_resolutions.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in script_params (list)
+        _items = []
+        if self.script_params:
+            for _item_script_params in self.script_params:
+                if _item_script_params:
+                    _items.append(_item_script_params.to_dict())
+            _dict['script_params'] = _items
         return _dict
 
     @classmethod
@@ -109,9 +126,12 @@ class QuickProfile(BaseModel):
             "browser_type": obj.get("browser_type"),
             "core_version": obj.get("core_version"),
             "os_type": obj.get("os_type"),
+            "automation": obj.get("automation"),
+            "is_headless": obj.get("is_headless"),
             "proxy": Proxy.from_dict(obj["proxy"]) if obj.get("proxy") is not None else None,
             "parameters": QuickProfileMetaParams.from_dict(obj["parameters"]) if obj.get("parameters") is not None else None,
-            "allowed_screen_resolutions": AllowedScreenResolutions.from_dict(obj["allowed_screen_resolutions"]) if obj.get("allowed_screen_resolutions") is not None else None
+            "script_file": obj.get("script_file"),
+            "script_params": [ScriptParameter.from_dict(_item) for _item in obj["script_params"]] if obj.get("script_params") is not None else None
         })
         return _obj
 

@@ -24,12 +24,10 @@ from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 
-
 class Setting(BaseModel):
     """
     Setting
-    """  # noqa: E501
-
+    """ # noqa: E501
     key: Annotated[str, Field(strict=True, max_length=20)]
     value: Annotated[str, Field(strict=True, max_length=20)]
     __properties: ClassVar[List[str]] = ["key", "value"]
@@ -39,6 +37,7 @@ class Setting(BaseModel):
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -64,7 +63,8 @@ class Setting(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set([
+        ])
 
         _dict = self.model_dump(
             by_alias=True,
@@ -82,5 +82,10 @@ class Setting(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate({"key": obj.get("key"), "value": obj.get("value")})
+        _obj = cls.model_validate({
+            "key": obj.get("key"),
+            "value": obj.get("value")
+        })
         return _obj
+
+

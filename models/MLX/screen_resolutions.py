@@ -73,9 +73,9 @@ class ScreenResolutions(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in resolutions (list)
         _items = []
         if self.resolutions:
-            for _item in self.resolutions:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_resolutions in self.resolutions:
+                if _item_resolutions:
+                    _items.append(_item_resolutions.to_dict())
             _dict['resolutions'] = _items
         return _dict
 

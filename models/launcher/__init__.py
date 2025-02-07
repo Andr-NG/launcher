@@ -20,11 +20,13 @@ from models.launcher.browser_cores_list_response import BrowserCoresListResponse
 from models.launcher.browser_type import BrowserType
 from models.launcher.cmd_param import CmdParam
 from models.launcher.cmd_params import CmdParams
+from models.launcher.cookie_export import CookieExport
 from models.launcher.cookie_export_request import CookieExportRequest
 from models.launcher.cookie_export_response import CookieExportResponse
 from models.launcher.cookie_import import CookieImport
 from models.launcher.download_progress import DownloadProgress
 from models.launcher.file_data import FileData
+from models.launcher.fingerprint_data import FingerprintData
 from models.launcher.geolocation import Geolocation
 from models.launcher.graphic import Graphic
 from models.launcher.import_profile_request import ImportProfileRequest
@@ -32,6 +34,14 @@ from models.launcher.launcher_validate_proxy_response import LauncherValidatePro
 from models.launcher.localization import Localization
 from models.launcher.machine_id_response import MachineIDResponse
 from models.launcher.machine_id_response_data import MachineIDResponseData
+from models.launcher.masking_cd import MaskingCD
+from models.launcher.masking_cm import MaskingCM
+from models.launcher.masking_mn import MaskingMN
+from models.launcher.masking_mnd import MaskingMND
+from models.launcher.masking_ncm import MaskingNCM
+from models.launcher.masking_ncmd import MaskingNCMD
+from models.launcher.masking_nd import MaskingND
+from models.launcher.masking_options import MaskingOptions
 from models.launcher.masking_pab import MaskingPAB
 from models.launcher.media_devices import MediaDevices
 from models.launcher.navigator import Navigator
@@ -47,6 +57,7 @@ from models.launcher.profile_import_statuses import ProfileImportStatuses
 from models.launcher.profile_import_statuses_response import ProfileImportStatusesResponse
 from models.launcher.profile_info import ProfileInfo
 from models.launcher.profile_info_response import ProfileInfoResponse
+from models.launcher.profile_meta_flags import ProfileMetaFlags
 from models.launcher.profile_status import ProfileStatus
 from models.launcher.profile_status_response import ProfileStatusResponse
 from models.launcher.profile_statuses import ProfileStatuses

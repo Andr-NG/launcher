@@ -20,35 +20,27 @@ import json
 
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List, Optional
+from typing import Optional, Set
 from typing_extensions import Self
-
 
 class UserFolder(BaseModel):
     """
     One of folders of the given user in \"folders of user\" list
-    """  # noqa: E501
-
+    """ # noqa: E501
     name: StrictStr = Field(description="Name of folder")
     folder_id: StrictStr = Field(description="Folder ID")
     profiles_count: StrictInt = Field(description="Number of profiles in the folder")
-    created_at: datetime = Field(
-        description="The time and date of folder when it was created"
-    )
+    created_at: datetime = Field(description="The time and date of folder when it was created")
     comment: Optional[StrictStr] = Field(default=None, description="Comment for folder")
-    __properties: ClassVar[List[str]] = [
-        "name",
-        "folder_id",
-        "profiles_count",
-        "created_at",
-        "comment",
-    ]
+    __properties: ClassVar[List[str]] = ["name", "folder_id", "profiles_count", "created_at", "comment"]
 
     model_config = ConfigDict(
         populate_by_name=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -74,7 +66,8 @@ class UserFolder(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set([
+        ])
 
         _dict = self.model_dump(
             by_alias=True,
@@ -92,13 +85,13 @@ class UserFolder(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "name": obj.get("name"),
-                "folder_id": obj.get("folder_id"),
-                "profiles_count": obj.get("profiles_count"),
-                "created_at": obj.get("created_at"),
-                "comment": obj.get("comment"),
-            }
-        )
+        _obj = cls.model_validate({
+            "name": obj.get("name"),
+            "folder_id": obj.get("folder_id"),
+            "profiles_count": obj.get("profiles_count"),
+            "created_at": obj.get("created_at"),
+            "comment": obj.get("comment")
+        })
         return _obj
+
+

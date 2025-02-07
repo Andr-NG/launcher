@@ -20,37 +20,27 @@ import json
 
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List
+from typing import Optional, Set
 from typing_extensions import Self
-
 
 class WorkspaceUser(BaseModel):
     """
     One of users of the given workspace in \"users of workspace\" list
-    """  # noqa: E501
-
+    """ # noqa: E501
     email: StrictStr = Field(description="Email")
     role: StrictStr = Field(description="Role of the user in workspace")
     user_id: StrictStr = Field(description="User ID")
-    folders_count: StrictInt = Field(
-        description="Number of folders the user has access to"
-    )
-    joined_at: datetime = Field(
-        description="Date and time of user joined the workspace"
-    )
-    __properties: ClassVar[List[str]] = [
-        "email",
-        "role",
-        "user_id",
-        "folders_count",
-        "joined_at",
-    ]
+    folders_count: StrictInt = Field(description="Number of folders the user has access to")
+    joined_at: datetime = Field(description="Date and time of user joined the workspace")
+    __properties: ClassVar[List[str]] = ["email", "role", "user_id", "folders_count", "joined_at"]
 
     model_config = ConfigDict(
         populate_by_name=True,
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -76,7 +66,8 @@ class WorkspaceUser(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set([
+        ])
 
         _dict = self.model_dump(
             by_alias=True,
@@ -94,13 +85,13 @@ class WorkspaceUser(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "email": obj.get("email"),
-                "role": obj.get("role"),
-                "user_id": obj.get("user_id"),
-                "folders_count": obj.get("folders_count"),
-                "joined_at": obj.get("joined_at"),
-            }
-        )
+        _obj = cls.model_validate({
+            "email": obj.get("email"),
+            "role": obj.get("role"),
+            "user_id": obj.get("user_id"),
+            "folders_count": obj.get("folders_count"),
+            "joined_at": obj.get("joined_at")
+        })
         return _obj
+
+

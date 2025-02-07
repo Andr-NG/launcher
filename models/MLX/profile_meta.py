@@ -19,7 +19,7 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from models.MLX.browser_type import BrowserType
@@ -38,6 +38,7 @@ class ProfileMeta(BaseModel):
     last_update_at: datetime
     removed_at: datetime
     removed_by: StrictStr
+    is_mla_profile: Optional[StrictBool] = None
     browser_type: BrowserType
     os_type: StrictStr
     core_version: StrictInt
@@ -46,7 +47,7 @@ class ProfileMeta(BaseModel):
     tags: Optional[List[Annotated[str, Field(min_length=1, strict=True, max_length=10)]]] = None
     parameters: ProfileMetaUpdateParams
     id: StrictStr
-    __properties: ClassVar[List[str]] = ["folder_id", "workspace_id", "status", "created_at", "last_update_at", "removed_at", "removed_by", "browser_type", "os_type", "core_version", "name", "notes", "tags", "parameters", "id"]
+    __properties: ClassVar[List[str]] = ["folder_id", "workspace_id", "status", "created_at", "last_update_at", "removed_at", "removed_by", "is_mla_profile", "browser_type", "os_type", "core_version", "name", "notes", "tags", "parameters", "id"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -109,6 +110,7 @@ class ProfileMeta(BaseModel):
             "last_update_at": obj.get("last_update_at"),
             "removed_at": obj.get("removed_at"),
             "removed_by": obj.get("removed_by"),
+            "is_mla_profile": obj.get("is_mla_profile"),
             "browser_type": obj.get("browser_type"),
             "os_type": obj.get("os_type"),
             "core_version": obj.get("core_version"),

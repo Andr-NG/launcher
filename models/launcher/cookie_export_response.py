@@ -18,8 +18,9 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict
 from typing import Any, ClassVar, Dict, List, Optional
+from models.launcher.cookie_export import CookieExport
 from models.launcher.response_status import ResponseStatus
 from typing import Optional, Set
 from typing_extensions import Self
@@ -29,7 +30,7 @@ class CookieExportResponse(BaseModel):
     CookieExportResponse
     """ # noqa: E501
     status: ResponseStatus
-    data: Optional[StrictStr] = None
+    data: Optional[CookieExport] = None
     __properties: ClassVar[List[str]] = ["status", "data"]
 
     model_config = ConfigDict(
@@ -74,6 +75,9 @@ class CookieExportResponse(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of status
         if self.status:
             _dict['status'] = self.status.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of data
+        if self.data:
+            _dict['data'] = self.data.to_dict()
         return _dict
 
     @classmethod
@@ -87,7 +91,7 @@ class CookieExportResponse(BaseModel):
 
         _obj = cls.model_validate({
             "status": ResponseStatus.from_dict(obj["status"]) if obj.get("status") is not None else None,
-            "data": obj.get("data")
+            "data": CookieExport.from_dict(obj["data"]) if obj.get("data") is not None else None
         })
         return _obj
 

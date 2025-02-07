@@ -23,11 +23,10 @@ from typing import Any, ClassVar, Dict, List
 from typing import Optional, Set
 from typing_extensions import Self
 
-
 class RefreshToken(BaseModel):
     """
     RefreshToken
-    """  # noqa: E501
+    """ # noqa: E501
     email: StrictStr
     refresh_token: StrictStr
     workspace_id: StrictStr
@@ -38,6 +37,7 @@ class RefreshToken(BaseModel):
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -88,3 +88,5 @@ class RefreshToken(BaseModel):
             "workspace_id": obj.get("workspace_id")
         })
         return _obj
+
+

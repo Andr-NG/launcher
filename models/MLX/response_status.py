@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Multilogin X Profile Management
+    Multilogin X Profile Access Management API
 
-    Multilogin X Profile Management API allows you to manage profiles.
+    Multilogin X Profile Access Management API allows you to control everything related to permissions, workspaces, team members.
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@multilogin.com
@@ -19,15 +19,14 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List
+from typing import Optional, Set
 from typing_extensions import Self
-
 
 class ResponseStatus(BaseModel):
     """
     ResponseStatus
-    """  # noqa: E501
-
+    """ # noqa: E501
     http_code: StrictInt
     error_code: StrictStr
     message: StrictStr
@@ -38,6 +37,7 @@ class ResponseStatus(BaseModel):
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -63,7 +63,8 @@ class ResponseStatus(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set([
+        ])
 
         _dict = self.model_dump(
             by_alias=True,
@@ -81,11 +82,11 @@ class ResponseStatus(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "http_code": obj.get("http_code"),
-                "error_code": obj.get("error_code"),
-                "message": obj.get("message"),
-            }
-        )
+        _obj = cls.model_validate({
+            "http_code": obj.get("http_code"),
+            "error_code": obj.get("error_code"),
+            "message": obj.get("message")
+        })
         return _obj
+
+

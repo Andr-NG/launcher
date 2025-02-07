@@ -14,19 +14,18 @@
 
 
 from __future__ import annotations
-from ctypes import Union
 import pprint
 import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List, Optional, Set, Union
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from models.MLX.allowed_screen_resolutions import AllowedScreenResolutions
 from models.MLX.browser_type import BrowserType
 from models.MLX.profile_meta_update_params import ProfileMetaUpdateParams
+from typing import Optional, Set
 from typing_extensions import Self
-
 
 class CreateProfile(BaseModel):
     """
@@ -57,6 +56,7 @@ class CreateProfile(BaseModel):
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""

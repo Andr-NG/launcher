@@ -24,7 +24,6 @@ from models.launcher.response_status import ResponseStatus
 from typing import Optional, Set
 from typing_extensions import Self
 
-
 class Response(BaseModel):
     """
     Response
@@ -37,6 +36,7 @@ class Response(BaseModel):
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -88,3 +88,5 @@ class Response(BaseModel):
             "status": ResponseStatus.from_dict(obj["status"]) if obj.get("status") is not None else None
         })
         return _obj
+
+

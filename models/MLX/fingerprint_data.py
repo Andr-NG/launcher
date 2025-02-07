@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Multilogin X Profile Management
+    Multilogin X Launcher API
 
-    Multilogin X Profile Management API allows you to manage profiles.
+    Launcher API is used to work with profiles in the browser (start, stop, get statuses).
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@multilogin.com
@@ -25,6 +25,7 @@ from models.MLX.cmd_params import CmdParams
 from models.MLX.geolocation import Geolocation
 from models.MLX.graphic import Graphic
 from models.MLX.localization import Localization
+from models.MLX.masking_options import MaskingOptions
 from models.MLX.media_devices import MediaDevices
 from models.MLX.navigator import Navigator
 from models.MLX.screen import Screen
@@ -48,7 +49,8 @@ class FingerprintData(BaseModel):
     geolocation: Optional[Geolocation] = None
     ports: Optional[List[Annotated[int, Field(le=65535, strict=True, ge=0)]]] = None
     cmd_params: Optional[CmdParams] = None
-    __properties: ClassVar[List[str]] = ["navigator", "localization", "timezone", "graphic", "webrtc", "fonts", "media_devices", "screen", "geolocation", "ports", "cmd_params"]
+    masking_options: Optional[MaskingOptions] = None
+    __properties: ClassVar[List[str]] = ["navigator", "localization", "timezone", "graphic", "webrtc", "fonts", "media_devices", "screen", "geolocation", "ports", "cmd_params", "masking_options"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -116,6 +118,9 @@ class FingerprintData(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of cmd_params
         if self.cmd_params:
             _dict['cmd_params'] = self.cmd_params.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of masking_options
+        if self.masking_options:
+            _dict['masking_options'] = self.masking_options.to_dict()
         return _dict
 
     @classmethod
@@ -138,7 +143,8 @@ class FingerprintData(BaseModel):
             "screen": Screen.from_dict(obj["screen"]) if obj.get("screen") is not None else None,
             "geolocation": Geolocation.from_dict(obj["geolocation"]) if obj.get("geolocation") is not None else None,
             "ports": obj.get("ports"),
-            "cmd_params": CmdParams.from_dict(obj["cmd_params"]) if obj.get("cmd_params") is not None else None
+            "cmd_params": CmdParams.from_dict(obj["cmd_params"]) if obj.get("cmd_params") is not None else None,
+            "masking_options": MaskingOptions.from_dict(obj["masking_options"]) if obj.get("masking_options") is not None else None
         })
         return _obj
 

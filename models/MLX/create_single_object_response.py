@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Multilogin X Profile Management
+    Multilogin X Profile Access Management API
 
-    Multilogin X Profile Management API allows you to manage profiles.
+    Multilogin X Profile Access Management API allows you to control everything related to permissions, workspaces, team members.
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@multilogin.com

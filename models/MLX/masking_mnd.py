@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Multilogin X Profile Management
+    Multilogin X Launcher API
 
-    Multilogin X Profile Management API allows you to manage profiles.
+    Launcher API is used to work with profiles in the browser (start, stop, get statuses).
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@multilogin.com

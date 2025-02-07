@@ -75,9 +75,9 @@ class NetworkArray(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in networks (list)
         _items = []
         if self.networks:
-            for _item in self.networks:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_networks in self.networks:
+                if _item_networks:
+                    _items.append(_item_networks.to_dict())
             _dict['networks'] = _items
         return _dict
 

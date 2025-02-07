@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Multilogin X Profile Management
+    Multilogin X Profile Access Management API
 
-    Multilogin X Profile Management API allows you to manage profiles.
+    Multilogin X Profile Access Management API allows you to control everything related to permissions, workspaces, team members.
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@multilogin.com
@@ -19,16 +19,15 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, StrictBytes, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union, Set
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from models.MLX.response_status import ResponseStatus
+from typing import Optional, Set
 from typing_extensions import Self
-
 
 class MLXResponse(BaseModel):
     """
     MLXResponse
-    """  # noqa: E501
-
+    """ # noqa: E501
     status: ResponseStatus
     data: Optional[Union[StrictBytes, StrictStr]] = None
     __properties: ClassVar[List[str]] = ["status", "data"]
@@ -38,6 +37,7 @@ class MLXResponse(BaseModel):
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -63,7 +63,8 @@ class MLXResponse(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set([
+        ])
 
         _dict = self.model_dump(
             by_alias=True,
@@ -72,7 +73,7 @@ class MLXResponse(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of status
         if self.status:
-            _dict["status"] = self.status.to_dict()
+            _dict['status'] = self.status.to_dict()
         return _dict
 
     @classmethod
@@ -84,14 +85,10 @@ class MLXResponse(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "status": (
-                    ResponseStatus.from_dict(obj["status"])
-                    if obj.get("status") is not None
-                    else None
-                ),
-                "data": obj.get("data"),
-            }
-        )
+        _obj = cls.model_validate({
+            "status": ResponseStatus.from_dict(obj["status"]) if obj.get("status") is not None else None,
+            "data": obj.get("data")
+        })
         return _obj
+
+

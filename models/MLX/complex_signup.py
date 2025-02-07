@@ -3,8 +3,7 @@
 """
     Multilogin X Profile Access Management API
 
-    Multilogin X Profile Access Management API allows you to control everything
-    related to permissions, workspaces, team members.
+    Multilogin X Profile Access Management API allows you to control everything related to permissions, workspaces, team members.
 
     The version of the OpenAPI document: 1.0.0
     Contact: support@multilogin.com
@@ -14,22 +13,22 @@
 """  # noqa: E501
 
 
+from __future__ import annotations
 import pprint
 import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List, Optional
 from models.MLX.settings import Settings
 from models.MLX.user_creds import UserCreds
+from typing import Optional, Set
 from typing_extensions import Self
-
 
 class ComplexSignup(BaseModel):
     """
     ComplexSignup
-    """  # noqa: E501
-
+    """ # noqa: E501
     creds: UserCreds
     settings: Optional[Settings] = None
     __properties: ClassVar[List[str]] = ["creds", "settings"]
@@ -39,6 +38,7 @@ class ComplexSignup(BaseModel):
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -64,7 +64,8 @@ class ComplexSignup(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set([
+        ])
 
         _dict = self.model_dump(
             by_alias=True,
@@ -73,10 +74,10 @@ class ComplexSignup(BaseModel):
         )
         # override the default output from pydantic by calling `to_dict()` of creds
         if self.creds:
-            _dict["creds"] = self.creds.to_dict()
+            _dict['creds'] = self.creds.to_dict()
         # override the default output from pydantic by calling `to_dict()` of settings
         if self.settings:
-            _dict["settings"] = self.settings.to_dict()
+            _dict['settings'] = self.settings.to_dict()
         return _dict
 
     @classmethod
@@ -88,18 +89,10 @@ class ComplexSignup(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "creds": (
-                    UserCreds.from_dict(obj["creds"])
-                    if obj.get("creds") is not None
-                    else None
-                ),
-                "settings": (
-                    Settings.from_dict(obj["settings"])
-                    if obj.get("settings") is not None
-                    else None
-                ),
-            }
-        )
+        _obj = cls.model_validate({
+            "creds": UserCreds.from_dict(obj["creds"]) if obj.get("creds") is not None else None,
+            "settings": Settings.from_dict(obj["settings"]) if obj.get("settings") is not None else None
+        })
         return _obj
+
+

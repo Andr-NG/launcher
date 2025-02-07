@@ -19,21 +19,18 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from models.MLX.setting import Setting
+from typing import Optional, Set
 from typing_extensions import Self
-
 
 class Settings(BaseModel):
     """
     Settings
-    """  # noqa: E501
-
+    """ # noqa: E501
     language: StrictStr
-    custom: Optional[Annotated[List[Setting], Field(min_length=0, max_length=10)]] = (
-        None
-    )
+    custom: Optional[Annotated[List[Setting], Field(min_length=0, max_length=10)]] = None
     __properties: ClassVar[List[str]] = ["language", "custom"]
 
     model_config = ConfigDict(
@@ -41,6 +38,7 @@ class Settings(BaseModel):
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -66,20 +64,21 @@ class Settings(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set([
+        ])
 
         _dict = self.model_dump(
             by_alias=True,
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in custom (list) # noqa: E501
+        # override the default output from pydantic by calling `to_dict()` of each item in custom (list)
         _items = []
         if self.custom:
             for _item_custom in self.custom:
                 if _item_custom:
                     _items.append(_item_custom.to_dict())
-            _dict["custom"] = _items
+            _dict['custom'] = _items
         return _dict
 
     @classmethod
@@ -91,14 +90,10 @@ class Settings(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "language": obj.get("language"),
-                "custom": (
-                    [Setting.from_dict(_item) for _item in obj["custom"]]
-                    if obj.get("custom") is not None
-                    else None
-                ),
-            }
-        )
+        _obj = cls.model_validate({
+            "language": obj.get("language"),
+            "custom": [Setting.from_dict(_item) for _item in obj["custom"]] if obj.get("custom") is not None else None
+        })
         return _obj
+
+

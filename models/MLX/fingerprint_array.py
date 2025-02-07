@@ -74,9 +74,9 @@ class FingerprintArray(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of each item in fingerprints (list)
         _items = []
         if self.fingerprints:
-            for _item in self.fingerprints:
-                if _item:
-                    _items.append(_item.to_dict())
+            for _item_fingerprints in self.fingerprints:
+                if _item_fingerprints:
+                    _items.append(_item_fingerprints.to_dict())
             _dict['fingerprints'] = _items
         return _dict
 

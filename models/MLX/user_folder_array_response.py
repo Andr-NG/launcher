@@ -19,11 +19,11 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict
-from typing import Any, ClassVar, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List, Optional
 from models.MLX.response_status import ResponseStatus
 from models.MLX.user_folder_array import UserFolderArray
+from typing import Optional, Set
 from typing_extensions import Self
-
 
 class UserFolderArrayResponse(BaseModel):
     """

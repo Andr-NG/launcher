@@ -19,21 +19,18 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional, Set
+from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from models.MLX.user_workspace import UserWorkspace
+from typing import Optional, Set
 from typing_extensions import Self
-
 
 class UserWorkspaceArray(BaseModel):
     """
     UserWorkspaceArray
-    """  # noqa: E501
-
+    """ # noqa: E501
     workspaces: Annotated[List[UserWorkspace], Field(min_length=1, max_length=100)]
-    total_count: StrictInt = Field(
-        description="Total number of workspaces that the user has"
-    )
+    total_count: StrictInt = Field(description="Total number of workspaces that the user has")
     __properties: ClassVar[List[str]] = ["workspaces", "total_count"]
 
     model_config = ConfigDict(
@@ -41,6 +38,7 @@ class UserWorkspaceArray(BaseModel):
         validate_assignment=True,
         protected_namespaces=(),
     )
+
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
@@ -66,20 +64,21 @@ class UserWorkspaceArray(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         """
-        excluded_fields: Set[str] = set([])
+        excluded_fields: Set[str] = set([
+        ])
 
         _dict = self.model_dump(
             by_alias=True,
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item
+        # override the default output from pydantic by calling `to_dict()` of each item in workspaces (list)
         _items = []
         if self.workspaces:
             for _item_workspaces in self.workspaces:
                 if _item_workspaces:
                     _items.append(_item_workspaces.to_dict())
-            _dict["workspaces"] = _items
+            _dict['workspaces'] = _items
         return _dict
 
     @classmethod
@@ -91,14 +90,10 @@ class UserWorkspaceArray(BaseModel):
         if not isinstance(obj, dict):
             return cls.model_validate(obj)
 
-        _obj = cls.model_validate(
-            {
-                "workspaces": (
-                    [UserWorkspace.from_dict(_item) for _item in obj["workspaces"]]
-                    if obj.get("workspaces") is not None
-                    else None
-                ),
-                "total_count": obj.get("total_count"),
-            }
-        )
+        _obj = cls.model_validate({
+            "workspaces": [UserWorkspace.from_dict(_item) for _item in obj["workspaces"]] if obj.get("workspaces") is not None else None,
+            "total_count": obj.get("total_count")
+        })
         return _obj
+
+
