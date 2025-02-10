@@ -71,7 +71,7 @@ jobs:
                 set -e
                 ADAPTER_DIR=/home/runner/mlx/deps/adapter_tester
                 mkdir -p $ADAPTER_DIR
-                wget https://ml000x-dev-dists.s3.eu-north-1.amazonaws.com/adapter_tester/1.0.0/linux/adapter-amd64.bin -O $ADAPTER_DIR/adapter.bin
+                wget https://ml000x-dev-dists.s3.eu-north-1.amazonaws.com/adapter_tester/${{ inputs.adapter_version }}/linux/adapter-amd64.bin -O $ADAPTER_DIR/adapter.bin
                 chmod +x $ADAPTER_DIR/adapter.bin
                 echo "1.0" > $ADAPTER_DIR/VERSION
         

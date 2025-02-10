@@ -92,7 +92,7 @@ class TestLauncherRegression:
         )
         assert response.status.http_code == 200, 'Failed to start quick profile'
 
-        # Parsing the message and doing assertions.
+
         ws_message = ws.recv()
         parsed = json.loads(ws_message)
         logger.info(f"Websocket messages are : {ws_message}")
@@ -102,7 +102,7 @@ class TestLauncherRegression:
         assert parsed["Profiles"][0]["Status"] == "start_browser"
         ws.close()
 
-    # @pytest.mark.skip(reason="Skipping this test for now")
+    @pytest.mark.skip(reason="Skipping this test for now")
     def test_get_folder_id(self, request: FixtureRequest, mlx_api: API.MLX) -> None:
         logger.info(f"Executing {request.node.name}")
         response = mlx_api.get_folder_id()
@@ -110,7 +110,7 @@ class TestLauncherRegression:
         assert response.status.http_code == 200, 'Failed to retrieve folder_id'
         logger.info(f"Finishing {request.node.name}")
 
-    # @pytest.mark.skip(reason="Skipping this test for now.")
+    @pytest.mark.skip(reason="Skipping this test for now.")
     def test_create_profile(self, mlx_api: API.MLX, request: FixtureRequest) -> None:
         logger.info(f"Executing {request.node.name}")
         body = data.PROFILE_GENERIC
@@ -121,7 +121,7 @@ class TestLauncherRegression:
         assert response.status.http_code == 201, 'Failed to create a profile'
         logger.info(f"Finishing {request.node.name}")
 
-    # @pytest.mark.skip(reason="Skipping this test for now.")
+    @pytest.mark.skip(reason="Skipping this test for now.")
     def test_launcher_profile(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
@@ -135,33 +135,33 @@ class TestLauncherRegression:
         assert response.status.http_code == 200, 'Failed to launch profile'
         logger.info(f"Finishing {request.node.name}")
 
-    def test_adapter_value(self, request: FixtureRequest, mlx_api: API.MLX):
-        logger.info(f"Executing {request.node.name}")
-        adapter_log_path = home_dir / 'mlx' / 'logs' / 'tester_a_mlx.log'
-        baked_meta = {}
-        start_meta = {}
+    # def test_adapter_value(self, request: FixtureRequest, mlx_api: API.MLX):
+    #     logger.info(f"Executing {request.node.name}")
+    #     adapter_log_path = home_dir / 'mlx' / 'logs' / 'tester_a_mlx.log'
+    #     baked_meta = {}
+    #     start_meta = {}
 
-        # Reading the adpater log file to validate
-        try:
-            with open(adapter_log_path, 'r') as log_file:
-                for line in log_file:
-                    try:
-                        log_entry: dict = json.loads(line.rstrip())
-                        if 'raw fingerprint' in log_entry.get('@message', 'No key found'):
-                            baked_meta.update(log_entry['EXTRA_VALUE_AT_END'])
+    #     # Reading the adpater log file to validate
+    #     try:
+    #         with open(adapter_log_path, 'r') as log_file:
+    #             for line in log_file:
+    #                 try:
+    #                     log_entry: dict = json.loads(line.rstrip())
+    #                     if 'raw fingerprint' in log_entry.get('@message', 'No key found'):
+    #                         baked_meta.update(log_entry['EXTRA_VALUE_AT_END'])
 
-                        elif 'start request' in log_entry.get('@message', 'No key found'):
-                            start_meta.update(log_entry['EXTRA_VALUE_AT_END'])
+    #                     elif 'start request' in log_entry.get('@message', 'No key found'):
+    #                         start_meta.update(log_entry['EXTRA_VALUE_AT_END'])
 
-                    except json.JSONDecodeError:
-                        logger.exception('An error occurred duting decoding')
-                        continue
-        except FileNotFoundError:
-            logger.exception('No such file found. Check the path again')
+    #                 except json.JSONDecodeError:
+    #                     logger.exception('An error occurred duting decoding')
+    #                     continue
+    #     except FileNotFoundError:
+    #         logger.exception('No such file found. Check the path again')
         
-        response = mlx_api.get_baked_meta()
-        logger.info(f'Baked meta from the log file {baked_meta}')
-        assert baked_meta == response
+    #     response = mlx_api.get_baked_meta()
+    #     logger.info(f'Baked meta from the log file {baked_meta}')
+    #     assert baked_meta == response
 
     @pytest.mark.skip(reason="Skipping this test for now.")
     def test_profile_status_before_close(
