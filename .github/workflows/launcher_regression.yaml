@@ -81,11 +81,11 @@ jobs:
                 LAUNCHER_DIR=/home/runner/mlx/deps/launcher
                 mkdir -p $LAUNCHER_DIR
                 if [[ "${{ inputs.bucket }}" == 'DEV' ]]; then
-                LAUNCHER_URL="https://ml000x-dev-dists.s3.eu-north-1.amazonaws.com"
+                LAUNCHER_URL="https://ml000x-dev-dists.s3.eu-north-1.amazonaws.com/launcher-mlx"
                 else
-                LAUNCHER_URL="https://mlxdists.s3.eu-west-3.amazonaws.com"
+                LAUNCHER_URL="https://mlxdists.s3.eu-west-3.amazonaws.com/launcher"
                 fi
-                wget $LAUNCHER_URL/launcher-mlx/${{ inputs.launcher_build }}/launcher-linux_amd64.bin -O $LAUNCHER_DIR/launcher.bin
+                wget $LAUNCHER_URL/${{ inputs.launcher_build }}/launcher-linux_amd64.bin -O $LAUNCHER_DIR/launcher.bin
                 chmod +x $LAUNCHER_DIR/launcher.bin
         
         - name: Start Launcher
