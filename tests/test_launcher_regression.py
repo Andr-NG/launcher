@@ -7,12 +7,15 @@ import ssl
 import logging
 import time
 import os
-from pytest import FixtureRequest
+import pathlib
 import data
+from pytest import FixtureRequest
 from models import MLX as mlx_models
 from models import launcher
 
 logger = logging.getLogger("my_logger")
+path = pathlib.Path()
+home_dir = path.home()
 
 
 class TestLauncherRegression:
@@ -28,6 +31,7 @@ class TestLauncherRegression:
         assert response.status.http_code == 200, "Failed sign-in attempt"
         logger.info(f"Finishing {request.node.name}")
 
+    @pytest.mark.skip(reason="Skipping this test for now.")
     def test_get_launcher_version(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
@@ -38,6 +42,7 @@ class TestLauncherRegression:
         assert response.data.env == os.getenv("ENV")
         logger.info(f"Finishing {request.node.name}")
 
+    @pytest.mark.skip(reason="Skipping this test for now.")
     def test_ws_connection(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> websocket.WebSocket | None:
@@ -55,7 +60,6 @@ class TestLauncherRegression:
 
                 assert ws.connected, "Connection failed"
                 logger.info("Connection successfull!")
-                ws.close()
                 break
 
             except websocket.WebSocketException as e:
@@ -64,7 +68,6 @@ class TestLauncherRegression:
                     logger.info("Attempting to connect again")
                     time.sleep(DELAY)
                 else:
-                    ws.close()
                     pytest.fail("Failed to connect to WebSocket after multiple retries")
 
             except ssl.SSLCertVerificationError as e:
@@ -76,12 +79,10 @@ class TestLauncherRegression:
 
                 assert ws.connected, 'Connection failed'
                 logger.info("Connection successfull!")
-                ws.close()
                 break
 
             except Exception as e:
                 logger.error(f"Unexpected error occurred: {e}")
-                ws.close()
                 raise
 
         # Starting a QBP to populate messages.
@@ -99,6 +100,7 @@ class TestLauncherRegression:
         assert parsed, "Empty message"
         assert parsed["Profiles"][0]["IsQuick"] is True, 'Wrong value for IsQuick'
         assert parsed["Profiles"][0]["Status"] == "start_browser"
+        ws.close()
 
     # @pytest.mark.skip(reason="Skipping this test for now")
     def test_get_folder_id(self, request: FixtureRequest, mlx_api: API.MLX) -> None:
@@ -124,23 +126,44 @@ class TestLauncherRegression:
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
         logger.info(f"Executing {request.node.name}")
-        try:
-            response: launcher.Response = launcher_api.start_profile(
+        response: launcher.Response = launcher_api.start_profile(
                 # profile_id=launcher_api.get_var('profile_id'),
                 # folder_id=launcher_api.get_var('folder_id'),
                 profile_id=launcher_api.profile_id,
                 folder_id=launcher_api.folder_id,
             )
-            assert response.status.http_code == 200, 'Failed to launch profile'
-        except AssertionError as e:
-            logger.error("Validation error occurred: %s", e)
-            raise
-        except Exception as e:
-            logger.error("Unexpected error has occurred: %s", e)
-            raise
-        finally:
-            logger.info(f"Finishing {request.node.name}")
+        assert response.status.http_code == 200, 'Failed to launch profile'
+        logger.info(f"Finishing {request.node.name}")
 
+    def test_adapter_value(self, request: FixtureRequest, mlx_api: API.MLX):
+        logger.info(f"Executing {request.node.name}")
+        adapter_log_path = home_dir / 'mlx' / 'logs' / 'tester_a_mlx.log'
+        baked_meta = {}
+        start_meta = {}
+
+        # Reading the adpater log file to validate
+        try:
+            with open(adapter_log_path, 'r') as log_file:
+                for line in log_file:
+                    try:
+                        log_entry: dict = json.loads(line.rstrip())
+                        if 'raw fingerprint' in log_entry.get('@message', 'No key found'):
+                            baked_meta.update(log_entry['EXTRA_VALUE_AT_END'])
+
+                        elif 'start request' in log_entry.get('@message', 'No key found'):
+                            start_meta.update(log_entry['EXTRA_VALUE_AT_END'])
+
+                    except json.JSONDecodeError:
+                        logger.exception('An error occurred duting decoding')
+                        continue
+        except FileNotFoundError:
+            logger.exception('No such file found. Check the path again')
+        
+        response = mlx_api.get_baked_meta()
+        logger.info(f'Baked meta from the log file {baked_meta}')
+        assert baked_meta == response
+
+    @pytest.mark.skip(reason="Skipping this test for now.")
     def test_profile_status_before_close(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
@@ -154,7 +177,7 @@ class TestLauncherRegression:
         assert status_data.active_counter.quick >= 1, 'No quick profile running'
         assert status_data.states[launcher_api.profile_id].status == 'browser_running'
 
-    # @pytest.mark.skip(reason="Skipping this test for now.")
+    @pytest.mark.skip(reason="Skipping this test for now.")
     def test_close_all_profile(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:

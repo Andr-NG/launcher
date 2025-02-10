@@ -15,7 +15,7 @@ on:
             backend_env:
                 description: 'Backend environment to run tests against'
                 required: true
-                default: 'DEV'
+                default: 'Multilogin EU'
                 type: choice
                 options:
                     - DEV
@@ -25,6 +25,23 @@ on:
                     - INDIGO_PROD
                     - INDIGO_DEV
                     - MLX_LT
+            bucket: 
+                description: 'Select the S bucket'
+                required: true
+                default: 'PROD'
+                type: choice
+                options:
+                    - DEV
+                    - PROD
+            adapter_version:
+                description: 'Adapter version from s3'
+                required: true
+                default: 1.1.0 # Latest as of 02.2025
+                type: string  
+            launcher_build:
+                description: 'Select the build version'
+                required: true
+                default: 'latest-build'
 jobs:
     test:
         runs-on: ubuntu-latest
@@ -63,7 +80,12 @@ jobs:
                 set -e
                 LAUNCHER_DIR=/home/runner/mlx/deps/launcher
                 mkdir -p $LAUNCHER_DIR
-                wget https://ml000x-dev-dists.s3.eu-north-1.amazonaws.com/launcher-mlx/CORE-1624/launcher-linux_amd64_CORE-1624.bin -O $LAUNCHER_DIR/launcher.bin
+                if [[ "${{ inputs.bucket }}" == 'DEV' ]]; then
+                LAUNCHER_URL="https://ml000x-dev-dists.s3.eu-north-1.amazonaws.com"
+                else
+                LAUNCHER_URL="https://mlxdists.s3.eu-west-3.amazonaws.com"
+                fi
+                wget $LAUNCHER_URL/launcher-mlx/${{ inputs.launcher_build }}/launcher-linux_amd64.bin -O $LAUNCHER_DIR/launcher.bin
                 chmod +x $LAUNCHER_DIR/launcher.bin
         
         - name: Start Launcher
