@@ -90,8 +90,10 @@ jobs:
                 mkdir -p $LAUNCHER_DIR
                 if [[ "${{ inputs.bucket }}" == 'DEV' ]]; then
                 LAUNCHER_URL="https://ml000x-dev-dists.s3.eu-north-1.amazonaws.com/launcher-mlx"
+                echo "Downloading DEV Launcher ${{ inputs.launcher_build }}"
                 else
                 LAUNCHER_URL="https://mlxdists.s3.eu-west-3.amazonaws.com/launcher"
+                echo "Downloading PROD Launcher ${{ inputs.launcher_build }}"
                 fi
                 wget $LAUNCHER_URL/${{ inputs.launcher_build }}/launcher-linux_amd64.bin -O $LAUNCHER_DIR/launcher.bin
                 chmod +x $LAUNCHER_DIR/launcher.bin
