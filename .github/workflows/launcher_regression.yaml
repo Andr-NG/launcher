@@ -66,14 +66,22 @@ jobs:
                 python -m pip install --upgrade pip
                 pip install -r requirements.txt
 
+        - name: Cache Adapter Binary
+          id: cache-adapter
+          uses: actions/cache@v4
+          with:
+            path: /home/runner/mlx/deps/adapter_tester
+            key: adapter-${{ inputs.adapter_version }}
+            
         - name: Set up Adapter
+          if: steps.cache-adapter.outputs.cache-hit != 'true'  # Only run if not cached
           run: |
-                set -e
-                ADAPTER_DIR=/home/runner/mlx/deps/adapter_tester
-                mkdir -p $ADAPTER_DIR
-                wget https://ml000x-dev-dists.s3.eu-north-1.amazonaws.com/adapter_tester/${{ inputs.adapter_version }}/linux/adapter-amd64.bin -O $ADAPTER_DIR/adapter.bin
-                chmod +x $ADAPTER_DIR/adapter.bin
-                echo "1.0" > $ADAPTER_DIR/VERSION
+            set -e
+            ADAPTER_DIR=/home/runner/mlx/deps/adapter_tester
+            mkdir -p $ADAPTER_DIR
+            wget https://ml000x-dev-dists.s3.eu-north-1.amazonaws.com/adapter_tester/${{ inputs.adapter_version }}/linux/adapter-amd64.bin -O $ADAPTER_DIR/adapter.bin
+            chmod +x $ADAPTER_DIR/adapter.bin
+            echo "1.0" > $ADAPTER_DIR/VERSION
         
         - name: Set up Launcher
           run: |
@@ -119,7 +127,7 @@ jobs:
           if: env.exists == 'true'
           uses: actions/upload-artifact@v4
           with:
-            name: mlx-logs
+            name: launcher-logs
             path: ~/mlx/logs/launcher_*
 
         - name: Upload HTML Report as Artifact
