@@ -99,7 +99,7 @@ jobs:
         - name: Start test
           run:  |
                 set -e
-                pytest tests/test_launcher_regression.py --html=report.html
+                pytest tests/test_launcher_regression.py --html=report.html --self-contained-html
         
         - name: Upload HTML Report as Artifact
           uses: actions/upload-artifact@v4

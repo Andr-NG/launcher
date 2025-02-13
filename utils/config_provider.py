@@ -1,5 +1,8 @@
 from pathlib import Path
+import dotenv
 import os
+
+dotenv.load_dotenv()
 
 
 class ConfigProvider:

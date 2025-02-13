@@ -31,7 +31,7 @@ class TestLauncherRegression:
         assert response.status.http_code == 200, "Failed sign-in attempt"
         logger.info(f"Finishing {request.node.name}")
 
-    @pytest.mark.skip(reason="Skipping this test for now.")
+    # @pytest.mark.skip(reason="Skipping this test for now.")
     def test_get_launcher_version(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
@@ -42,7 +42,7 @@ class TestLauncherRegression:
         assert response.data.env == os.getenv("ENV")
         logger.info(f"Finishing {request.node.name}")
 
-    @pytest.mark.skip(reason="Skipping this test for now.")
+    # @pytest.mark.skip(reason="Skipping this test for now.")
     def test_ws_connection(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> websocket.WebSocket | None:
@@ -92,7 +92,6 @@ class TestLauncherRegression:
         )
         assert response.status.http_code == 200, 'Failed to start quick profile'
 
-
         ws_message = ws.recv()
         parsed = json.loads(ws_message)
         logger.info(f"Websocket messages are : {ws_message}")
@@ -102,7 +101,7 @@ class TestLauncherRegression:
         assert parsed["Profiles"][0]["Status"] == "start_browser"
         ws.close()
 
-    @pytest.mark.skip(reason="Skipping this test for now")
+    # @pytest.mark.skip(reason="Skipping this test for now")
     def test_get_folder_id(self, request: FixtureRequest, mlx_api: API.MLX) -> None:
         logger.info(f"Executing {request.node.name}")
         response = mlx_api.get_folder_id()
@@ -110,7 +109,7 @@ class TestLauncherRegression:
         assert response.status.http_code == 200, 'Failed to retrieve folder_id'
         logger.info(f"Finishing {request.node.name}")
 
-    @pytest.mark.skip(reason="Skipping this test for now.")
+    # @pytest.mark.skip(reason="Skipping this test for now.")
     def test_create_profile(self, mlx_api: API.MLX, request: FixtureRequest) -> None:
         logger.info(f"Executing {request.node.name}")
         body = data.PROFILE_GENERIC
@@ -121,7 +120,7 @@ class TestLauncherRegression:
         assert response.status.http_code == 201, 'Failed to create a profile'
         logger.info(f"Finishing {request.node.name}")
 
-    @pytest.mark.skip(reason="Skipping this test for now.")
+    # @pytest.mark.skip(reason="Skipping this test for now.")
     def test_launcher_profile(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
@@ -188,6 +187,7 @@ class TestLauncherRegression:
         assert response.status.http_code == 200, "Failed to stop profile"
         logger.info(f"Finishing {request.node.name}")
 
+    @pytest.mark.skip(reason="Skipping this test for now.")
     def test_profile_status_after_close(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
