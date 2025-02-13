@@ -93,7 +93,7 @@ jobs:
                 set -e
                 export ADAPTER_TESTER=1
                 echo "Starting Launcher"
-                /home/runner/mlx/deps/launcher/launcher.bin -gw-en=$ENV &
+                /home/runner/mlx/deps/launcher/launcher.bin -gw-env=$ENV &
                 echo "Launcher started" 
         
         - name: Start test
