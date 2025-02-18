@@ -195,7 +195,7 @@ class Launcher(SharedVars):
 
     def import_cookies(
         self, cookies: str, xpass_load: bool = False
-    ) -> dict:
+    ) -> launcher.Response:
         """_summary_
 
         Args:
@@ -217,7 +217,7 @@ class Launcher(SharedVars):
             logger.info(
                 f"Receiving response from {self.import_cookies.__name__}: , {data.json()}"
             )
-            return data.json()
+            return launcher.Response(**data.json())
         except Exception as e:
             logger.error("Unexpected error occurred: %s", e)
             raise

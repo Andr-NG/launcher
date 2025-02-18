@@ -31,7 +31,7 @@ class Geolocation(BaseModel):
     latitude: Union[Annotated[float, Field(le=90, strict=True, ge=-90)], Annotated[int, Field(le=90, strict=True, ge=-90)]]
     longitude: Union[Annotated[float, Field(le=180, strict=True, ge=-180)], Annotated[int, Field(le=180, strict=True, ge=-180)]]
     altitude: Union[Annotated[float, Field(le=8850, strict=True, ge=-28)], Annotated[int, Field(le=8850, strict=True, ge=-28)]]
-    accuracy: Union[Annotated[float, Field(le=30000, strict=True, ge=100)], Annotated[int, Field(le=30000, strict=True, ge=100)]]
+    accuracy: Union[Annotated[float, Field(le=30000, strict=True, ge=0)], Annotated[int, Field(le=30000, strict=True, ge=0)]]
     __properties: ClassVar[List[str]] = ["latitude", "longitude", "altitude", "accuracy"]
 
     model_config = ConfigDict(

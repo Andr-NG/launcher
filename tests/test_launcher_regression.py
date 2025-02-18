@@ -9,13 +9,16 @@ import time
 import os
 import pathlib
 import data
+from utils import Helper
 from pytest import FixtureRequest
 from models import MLX as mlx_models
 from models import launcher
 
+
 logger = logging.getLogger("my_logger")
 path = pathlib.Path()
 home_dir = path.home()
+helper = Helper()
 
 
 class TestLauncherRegression:
@@ -32,7 +35,7 @@ class TestLauncherRegression:
         logger.info(f"Finishing {request.node.name}")
 
     # @pytest.mark.skip(reason="Skipping this test for now.")
-    def test_get_launcher_version(
+    def test_get_launcher_details(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
         logger.info(f"Executing {request.node.name}")
@@ -121,6 +124,16 @@ class TestLauncherRegression:
         logger.info(f"Finishing {request.node.name}")
 
     # @pytest.mark.skip(reason="Skipping this test for now.")
+    def test_import_cookies(self, launcher_api: API.Launcher, request: FixtureRequest) -> None:
+        logger.info(f"Executing {request.node.name}")
+        cookies = helper.read_cookies()
+        response = launcher_api.import_cookies(cookies=cookies)
+        assert response.status.http_code == 200
+        logger.info(f"Finishing {request.node.name}")
+
+        
+
+    # @pytest.mark.skip(reason="Skipping this test for now.")
     def test_launcher_profile(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
@@ -134,35 +147,41 @@ class TestLauncherRegression:
         assert response.status.http_code == 200, 'Failed to launch profile'
         logger.info(f"Finishing {request.node.name}")
 
-    # def test_adapter_value(self, request: FixtureRequest, mlx_api: API.MLX):
-    #     logger.info(f"Executing {request.node.name}")
-    #     adapter_log_path = home_dir / 'mlx' / 'logs' / 'tester_a_mlx.log'
-    #     baked_meta = {}
-    #     start_meta = {}
-
-    #     # Reading the adpater log file to validate
-    #     try:
-    #         with open(adapter_log_path, 'r') as log_file:
-    #             for line in log_file:
-    #                 try:
-    #                     log_entry: dict = json.loads(line.rstrip())
-    #                     if 'raw fingerprint' in log_entry.get('@message', 'No key found'):
-    #                         baked_meta.update(log_entry['EXTRA_VALUE_AT_END'])
-
-    #                     elif 'start request' in log_entry.get('@message', 'No key found'):
-    #                         start_meta.update(log_entry['EXTRA_VALUE_AT_END'])
-
-    #                 except json.JSONDecodeError:
-    #                     logger.exception('An error occurred duting decoding')
-    #                     continue
-    #     except FileNotFoundError:
-    #         logger.exception('No such file found. Check the path again')
-        
-    #     response = mlx_api.get_baked_meta()
-    #     logger.info(f'Baked meta from the log file {baked_meta}')
-    #     assert baked_meta == response
-
     # @pytest.mark.skip(reason="Skipping this test for now.")
+    def test_adapter_data(self, request: FixtureRequest, mlx_api: API.MLX) -> None:
+        logger.info(f"Executing {request.node.name}")
+
+        # Reading the adpater log file to validate
+        start_meta, params = helper.read_adapter_logs()
+        cookies = params.get('Cookies')
+        start_profile_data = mlx_models.ReadyProfile(**start_meta['data'])
+
+        # Retrieving real profile data
+        data = mlx_api.get_baked_meta()
+        response = mlx_models.ReadyProfileResponse(**data)
+
+        # Checking cookies
+        adapter_cookies = helper.read_cookies()
+        assert cookies == adapter_cookies
+
+        # Checking general data
+        start_profile_data.is_local == response.data.is_local
+        start_profile_data.name == response.data.name
+        start_profile_data.folder_id == response.data.folder_id
+
+        # Checking profile core
+        start_profile_data.core.auto_update_core == response.data.core.auto_update_core
+        start_profile_data.core.browser == response.data.core.browser
+        start_profile_data.core.geolocation_fill_based_on_external_ip == response.data.core.geolocation_fill_based_on_external_ip  # noqa: E501
+        start_profile_data.core.timezone_fill_based_on_external_ip == response.data.core.timezone_fill_based_on_external_ip  # noqa: E501
+
+        # Checking profile fingerprints
+        start_profile_data.fingerprint == response.data.fingerprint
+
+        # Checking profile flags
+        start_profile_data.flags == response.data.flags
+
+    @pytest.mark.skip(reason="Skipping this test for now.")
     def test_profile_status_before_close(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
@@ -187,7 +206,7 @@ class TestLauncherRegression:
         assert response.status.http_code == 200, "Failed to stop profile"
         logger.info(f"Finishing {request.node.name}")
 
-    # @pytest.mark.skip(reason="Skipping this test for now.")
+    @pytest.mark.skip(reason="Skipping this test for now.")
     def test_profile_status_after_close(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:

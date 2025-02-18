@@ -30,7 +30,7 @@ class ReadyProfileCore(BaseModel):
     """ # noqa: E501
     browser: ProfileMetaCore
     proxy: Optional[Proxy] = None
-    browser_version: StrictStr
+    browser_version: Optional[StrictStr] = None
     abort_start_if_proxy_leaks: Optional[StrictBool] = None
     timezone_fill_based_on_external_ip: Optional[StrictBool] = None
     geolocation_fill_based_on_external_ip: Optional[StrictBool] = None

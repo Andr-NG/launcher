@@ -36,7 +36,7 @@ on:
             adapter_version:
                 description: 'Adapter version from s3'
                 required: true
-                default: 1.1.0 # Latest as of 02.2025
+                default: 1.2.0 # Latest as of 02.2025
                 type: string  
             launcher_build:
                 description: 'Select the build version'

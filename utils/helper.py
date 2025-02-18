@@ -1,8 +1,10 @@
+import json
 import jwt
 import utils
 import logging
 import API
 import models
+from pathlib import Path
 from models.MLX import SigninResponse
 from datetime import datetime
 from pydantic import ValidationError
@@ -10,6 +12,8 @@ from pydantic import ValidationError
 
 config = utils.ConfigProvider()
 logger = logging.getLogger("my_logger")
+HOME_DIR = Path.home()
+adapter_log_path = HOME_DIR / 'mlx' / 'logs' / 'tester_a_mlx.log'
 
 
 class Helper:
@@ -122,7 +126,31 @@ class Helper:
                 logger.error("An unexpected error occurred: %s", e)
                 raise
 
+    def read_adapter_logs(self) -> dict:
+        """Read logs from adapter tester
 
+        Returns:
+            dict: profile data sent to browsers from adapater
+        """
+        fingerprints = {}
+        cookies = {}
+
+    # Reading the adpater log file to validate
+        with open(adapter_log_path, 'r') as log_file:
+            for line in log_file:
+                entry: dict = json.loads(line.strip())
+                if 'fingerprint' in entry:
+                    fingerprints.update(entry['fingerprint'])
+                if 'params' in entry and entry['method'] == 'ImportCookies':
+                    cookies.update(entry['params'])
+
+        return fingerprints, cookies
+
+    def read_cookies(self):
+        with open('cookies.txt', 'r') as file:
+            content = file.read()
+
+        return content
 # def create_profile(token: str, body: dict) -> List[str]:
 #     try:
 #         res = mlx_api.create_profile(token=token, profile_params=body)
