@@ -181,7 +181,7 @@ class TestLauncherRegression:
         # Checking profile flags
         start_profile_data.flags == response.data.flags
 
-    @pytest.mark.skip(reason="Skipping this test for now.")
+    # @pytest.mark.skip(reason="Skipping this test for now.")
     def test_profile_status_before_close(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
@@ -206,7 +206,7 @@ class TestLauncherRegression:
         assert response.status.http_code == 200, "Failed to stop profile"
         logger.info(f"Finishing {request.node.name}")
 
-    @pytest.mark.skip(reason="Skipping this test for now.")
+    # @pytest.mark.skip(reason="Skipping this test for now.")
     def test_profile_status_after_close(
         self, request: FixtureRequest, launcher_api: API.Launcher
     ) -> None:
