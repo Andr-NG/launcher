@@ -34,7 +34,7 @@ class Launcher(SharedVars):
 
         URL = self.url + f"/profile/f/{folder_id}/p/{profile_id}/start"
         try:
-            data = requests.get(url=URL, headers=self.HEADERS, verify=False)
+            data = requests.get(url=URL, headers=self.HEADERS)
             logger.info(
                 f"Receiving response from {self.start_profile.__name__}: {data.json()}"
             )
@@ -58,17 +58,17 @@ class Launcher(SharedVars):
             parsed = launcher.Response(**data.json())
             return parsed
 
-        except requests.exceptions.SSLError as e:
-            logger.error(
-                f"SSL ceftification verification error {e}. Re-trying with verification skipped"
-            )
-            data = requests.post(
-                url=URL, headers=self.HEADERS, data=body.to_json(), verify=False)
-            logger.info(
-                f"Receiving response from {self.start_quick_profile.__name__}: {data.json()}"
-            )
-            parsed = launcher.Response(**data.json())
-            return parsed
+        # except requests.exceptions.SSLError as e:
+        #     logger.error(
+        #         f"SSL ceftification verification error {e}. Re-trying with verification skipped"
+        #     )
+        #     data = requests.post(
+        #         url=URL, headers=self.HEADERS, data=body.to_json(), verify=False)
+        #     logger.info(
+        #         f"Receiving response from {self.start_quick_profile.__name__}: {data.json()}"
+        #     )
+        #     parsed = launcher.Response(**data.json())
+        #     return parsed
 
         except Exception as e:
             logger.error("Unexpected error occurred: %s", e)
@@ -84,16 +84,16 @@ class Launcher(SharedVars):
             parsed = launcher.VersionResponse(**data.json())
             return parsed
 
-        except requests.exceptions.SSLError as e:
-            logger.error(
-                f"SSL ceftification verification error {e}. Re-trying with verification skipped"
-            )
-            data = requests.get(url=URL, verify=False)
-            logger.info(
-                f"Receiving response from {self.get_launcher_version.__name__}: {data.json()}"
-            )
-            parsed = launcher.VersionResponse(**data.json())
-            return parsed
+        # except requests.exceptions.SSLError as e:
+        #     logger.error(
+        #         f"SSL ceftification verification error {e}. Re-trying with verification skipped"
+        #     )
+        #     data = requests.get(url=URL, verify=False)
+        #     logger.info(
+        #         f"Receiving response from {self.get_launcher_version.__name__}: {data.json()}"
+        #     )
+        #     parsed = launcher.VersionResponse(**data.json())
+        #     return parsed
 
         except Exception as e:
             logger.error("Unexpected error occurred: %s", e)
@@ -117,14 +117,14 @@ class Launcher(SharedVars):
             parsed = launcher.Response(**data.json())
             return parsed
 
-        except ssl.SSLCertVerificationError as e:
-            logger.error(
-                f"SSL ceftification verification error {e}. Re-trying with verification skipped"
-            )
-            data = requests.get(url=URL, headers=self.HEADERS, verify=False)
-            logger.info(
-                f"Receiving response from {self.stop_profile.__name__}: , {data.json()}"
-            )
+        # except ssl.SSLCertVerificationError as e:
+        #     logger.error(
+        #         f"SSL ceftification verification error {e}. Re-trying with verification skipped"
+        #     )
+        #     data = requests.get(url=URL, headers=self.HEADERS, verify=False)
+        #     logger.info(
+        #         f"Receiving response from {self.stop_profile.__name__}: , {data.json()}"
+        #     )
 
         except Exception as e:
             logger.error("Unexpected error occurred: %s", e)
@@ -146,18 +146,18 @@ class Launcher(SharedVars):
             parsed = launcher.Response(**data.json())
             return parsed
 
-        except requests.exceptions.SSLError as e:
-            logger.error(
-                f"SSL ceftification verification error {e}. Re-trying with verification skipped"
-            )
-            data = requests.get(
-                url=URL, headers=self.HEADERS, params=params, verify=False
-            )
-            logger.info(
-                f"Receiving response from {self.stop_all_profiles.__name__}: {data.json()}"
-            )
-            parsed = launcher.Response(**data.json())
-            return parsed
+        # except requests.exceptions.SSLError as e:
+        #     logger.error(
+        #         f"SSL ceftification verification error {e}. Re-trying with verification skipped"
+        #     )
+        #     data = requests.get(
+        #         url=URL, headers=self.HEADERS, params=params, verify=False
+        #     )
+        #     logger.info(
+        #         f"Receiving response from {self.stop_all_profiles.__name__}: {data.json()}"
+        #     )
+        #     parsed = launcher.Response(**data.json())
+        #     return parsed
 
         except Exception as e:
             logger.error("Unexpected error occurred: %s", e)
@@ -178,16 +178,16 @@ class Launcher(SharedVars):
             parsed = launcher.ProfileStatusesResponse(**data.json())
             return parsed
 
-        except requests.exceptions.SSLError as e:
-            logger.error(
-                f"SSL ceftification verification error {e}. Re-trying with verification skipped"
-            )
-            data = requests.get(url=URL, headers=self.HEADERS, verify=False)
-            logger.info(
-                f"Receiving response from {self.retrieve_profile_status.__name__}: , {data.json()}"
-            )
-            parsed = launcher.ProfileStatusesResponse(**data.json())
-            return parsed
+        # except requests.exceptions.SSLError as e:
+        #     logger.error(
+        #         f"SSL ceftification verification error {e}. Re-trying with verification skipped"
+        #     )
+        #     data = requests.get(url=URL, headers=self.HEADERS, verify=False)
+        #     logger.info(
+        #         f"Receiving response from {self.retrieve_profile_status.__name__}: , {data.json()}"
+        #     )
+        #     parsed = launcher.ProfileStatusesResponse(**data.json())
+        #     return parsed
 
         except Exception as e:
             logger.error("Unexpected error occurred: %s", e)
